@@ -20,6 +20,6 @@ hive -e 'SET hive.cli.print.header=true; SELECT COUNT(*) AS `total purchase`, `i
 // namenode
 yarn jar /opt/hadoop-2.7.4/share/hadoop/tools/lib/hadoop-streaming-2.7.4.jar \
 -files /data/mapper.py,/data/reducer.py \
--mapper /data/mapper.py -reducer /data/reducer.py \
--input /user/hadoop/purchases.txt \
+-mapper ./mapper.py -reducer ./reducer.py \
+-input /user/hadoop/data/purchases/purchases.txt \
 -output /user/hadoop/output-N
