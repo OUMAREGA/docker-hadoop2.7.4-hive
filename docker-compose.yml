@@ -1,16 +1,6 @@
 version: "3"
 
 services:
-  
-  filebrowser:
-    image: bde2020/hdfs-filebrowser
-    hostname: filebrowser
-    container_name: filebrowser
-    domainname: hadoop
-    environment:
-      - NAMENODE_HOST=namenode
-    ports:
-      - "8088:8088"
 
   namenode:
     build: 
@@ -45,7 +35,7 @@ services:
     container_name: resourcemanager
     restart: always
     environment:
-      SERVICE_PRECONDITION: "namenode:8020 namenode:50070 datanode:50075"
+      SERVICE_PRECONDITION: "namenode:9000 namenode:50070 datanode:50075"
     env_file:
       - ./hadoop.env
 
@@ -54,7 +44,7 @@ services:
     container_name: nodemanager
     restart: always
     environment:
-      SERVICE_PRECONDITION: "namenode:8020 namenode:50070 datanode:50075 resourcemanager:8088"
+      SERVICE_PRECONDITION: "namenode:9000 namenode:50070 datanode:50075 resourcemanager:8088"
     env_file:
       - ./hadoop.env
   
@@ -63,7 +53,7 @@ services:
     container_name: historyserver
     restart: always
     environment:
-      SERVICE_PRECONDITION: "namenode:8020 namenode:50070 datanode:50075 resourcemanager:8088"
+      SERVICE_PRECONDITION: "namenode:9000 namenode:50070 datanode:50075 resourcemanager:8088"
     volumes:
       - historyserver:/hadoop/yarn/timeline
     env_file:
@@ -97,6 +87,18 @@ services:
     ports:
       - "8080:8080"
 
+  cloudera:
+    image: gethue/hue:latest
+    hostname: hue
+    container_name: hue
+    dns: 8.8.8.8
+    ports:
+    - "8888:8888"
+    depends_on: 
+      - namenode
+    volumes:
+      - ./conf/hue.ini:/usr/share/hue/desktop/conf/hue.ini
+
 volumes:
   namenode:
   # datanode:
@@ -105,4 +107,4 @@ volumes:
 networks: 
   default:
     external: 
-        name: hadoop
+      name: hadoop
