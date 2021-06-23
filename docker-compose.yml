@@ -6,8 +6,6 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.namenode
-    volumes:
-      - namenode:/hadoop/dfs/name
     environment:
       - CLUSTER_NAME=test
     env_file:
@@ -16,11 +14,10 @@ services:
       - "50070:50070"
     volumes:
       - ./data:/data
+      - ./snapshots:/snapshots
 
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
-    # volumes:
-    #   - datanode:/hadoop/dfs/data
     env_file:
       - ./hadoop-hive.env
     environment:
@@ -98,10 +95,9 @@ services:
       - namenode
     volumes:
       - ./conf/hue.ini:/usr/share/hue/desktop/conf/hue.ini
+  
 
 volumes:
-  namenode:
-  # datanode:
   historyserver:
 
 networks: 
