@@ -1,5 +1,6 @@
 data/*
-scripts/*
-!**/.gitkeep
+!data/.gitkeep
+snapshots/*
+!snapshots/.gitkeep
 .vscode
 .idea
