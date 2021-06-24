@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 import sys
-salesTotal = 0
-oldKey = None
+sum = 0
+counter = 0
 
 # Loop around the data
 # It will be in the format key\tval
@@ -18,15 +18,13 @@ for line in sys.stdin:
         # Something has gone wrong. Skip this line.
         continue
         
-    thisKey, thisSale = data_mapped
+    station, temp = data_mapped
 
-    if oldKey and oldKey != thisKey:
-        print(oldKey, "\t", salesTotal)
-        oldKey = thisKey;
-        salesTotal = 0
+    counter+=1
+    
+    temp = float(temp.replace(',','.'))
 
-    oldKey = thisKey
-    salesTotal += float(thisSale)
-
-if oldKey != None:
-    print(oldKey, "\t", salesTotal)
+    sum+=temp
+    
+if counter != 0:
+    print("{}".format(sum/counter))
