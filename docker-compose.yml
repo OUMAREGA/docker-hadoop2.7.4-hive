@@ -13,6 +13,7 @@ services:
     ports:
       - "50070:50070"
     volumes:
+      - ./map_reduce:/map_reduce
       - ./data:/data
       - ./snapshots:/snapshots
 
