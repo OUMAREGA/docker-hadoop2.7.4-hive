@@ -81,8 +81,6 @@ services:
 
   hive-metastore-postgresql:
     image: bde2020/hive-metastore-postgresql:2.3.0
-    volumes:
-      - postgresqlserver:/var/lib/postgresql/data
 
   presto-coordinator:
     image: shawnzhu/prestodb:0.181
@@ -104,7 +102,6 @@ services:
 
 volumes:
   historyserver:
-  postgresqlserver:
 
 networks: 
   default:

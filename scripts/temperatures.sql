@@ -1,4 +1,4 @@
-CREATE TABLE temperature(
+CREATE EXTERNAL TABLE temperature(
 `station` string,
 `date` string,
 `source` string,
@@ -36,7 +36,10 @@ CREATE TABLE temperature(
 `ua1` string,
 `rem` string,
 `eqd` string)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-LOCATION '/user/hadoop/data/';
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+with serdeproperties (
+   "separatorChar" = ",",
+   "quoteChar"     = "\"",
+   "escapeChar"    = "\\"
+  )
+STORED AS TEXTFILE LOCATION '/user/hadoop/data/';
