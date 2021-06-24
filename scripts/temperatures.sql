@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS temperature;
+
 CREATE EXTERNAL TABLE temperature(
 `station` string,
 `date` string,
