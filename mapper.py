@@ -10,5 +10,5 @@ import sys
 for line in sys.stdin:
     data = line.strip().split(",")
     if len(data) == 37:
-        STATION, DATE, SOURCE,LATITUDE,LONGITUDE,ELEVATION, NAME, VIS, TMP = data
-        print("{0}\t{1}".format(STATION, TMP))
+        STATION, DATE, SOURCE, LATITUDE, LONGITUDE, ELEVATION, NAME, VIS, TMP = data
+        print("{0},{1}".format(NAME, TMP)) 
