@@ -47,3 +47,8 @@ Then query it from PrestoDB. You can get [presto.jar](https://prestosql.io/docs/
 * Ivan Ermilov [@earthquakesan](https://github.com/earthquakesan) (maintainer)
 * Yiannis Mouchakis [@gmouchakis](https://github.com/gmouchakis)
 * Ke Zhu [@shawnzhu](https://github.com/shawnzhu)
+
+
+## les colonnes du csv (37 colonnes)
+"STATION","DATE","SOURCE","LATITUDE","LONGITUDE","ELEVATION","NAME","REPORT_TYPE","CALL_SIGN","QUALITY_CONTROL","WND","CIG","VIS","TMP","DEW","SLP","AA1","AA2","AJ1","AY1","AY2","GA1","GA2","GA3","GE1","GF1","IA1","KA1","KA2","MA1","MD1","MW1","OC1","OD1","UA1","REM","EQD"
+
