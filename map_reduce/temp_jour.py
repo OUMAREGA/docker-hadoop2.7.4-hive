@@ -39,6 +39,6 @@ for day in dico.keys():
     if op == "min" or op == "max":  
         function_result = getattr(builtins,op)(dico[day])
 
-    print(f"{day}\t{function_result}")
+    print("{}\t{}".format(day,function_result))
 
 
