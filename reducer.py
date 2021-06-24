@@ -3,6 +3,7 @@
 import sys
 sum = 0
 counter = 0
+oldKey = None
 
 # Loop around the data
 # It will be in the format key\tval
@@ -20,11 +21,16 @@ for line in sys.stdin:
         
     station, temp = data_mapped
 
+    if oldKey and oldKey != station:
+        print(oldKey, "\t", sum)
+        oldKey = temp
+        sum = 0
+
+    oldKey = station
     counter+=1
-    
     temp = float(temp.replace(',','.'))
 
-    sum+=temp
+    sum += temp
     
-if counter != 0:
+if  oldKey != None and counter != 0:
     print("{}".format(sum/counter))
