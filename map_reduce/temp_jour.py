@@ -18,7 +18,7 @@ dico = {}
 for line in sys.stdin:
     date,temp = line.split('\t')
     # remove all non numeric characters (except +, - and comma)
-    temp = re.sub("[^0-9\-+\,]","",temp).replace(',','.')
+    temp = float(re.sub("[^0-9\-+\,]","",temp).replace(',','.'))
     # 2021-06-21T21:00:00
     day = date.split('T')
     if day[0] not in dico:

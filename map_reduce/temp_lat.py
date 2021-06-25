@@ -18,7 +18,7 @@ for line in sys.stdin:
     lat,lon,temp = line.split('\t')
     lat_lon = lat + "-" + lon
     # remove all non numeric characters (except +, - and comma)
-    temp = re.sub("[^0-9\-+\,]","",temp).replace(',','.')
+    temp = float(re.sub("[^0-9\-+\,]","",temp).replace(',','.'))
     if lat_lon not in dico:
         dico[lat_lon] = []
     dico[lat_lon].append(temp);

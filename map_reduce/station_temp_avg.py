@@ -35,7 +35,7 @@ for line in sys.stdin:
     oldKey = station
     counter+=1
     # remove all non numeric characters (except +, - and comma)
-    temp = re.sub("[^0-9\-+\,]","",temp).replace(',','.')
+    temp = float(re.sub("[^0-9\-+\,]","",temp).replace(',','.'))
 
     sum += temp
     
