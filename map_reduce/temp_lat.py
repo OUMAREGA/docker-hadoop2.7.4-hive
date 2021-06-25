@@ -17,10 +17,10 @@ dico = {}
 for line in sys.stdin:
     lat,lon,temp = line.split('\t')
     lat_lon = lat + "-" + lon
-    temp=float(temp.replace(',','.')
+    temp=float(temp.replace(',','.'))
     if lat_lon not in dico:
         dico[lat_lon] = []
-    dico[lat_lon].append(tmp);
+    dico[lat_lon].append(temp);
 
 op = sys.argv[0]
 
