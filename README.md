@@ -1,54 +1,74 @@
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/big-data-europe/Lobby)
+## Réchauffement climatique
 
-# docker-hive
+Ce projet a été réalisé à partir d'outils du big data (*Hadoop MapReduce*,*MongoDB*) sous une stack Docker. L'objectif est de pouvoir récupérer les données de la NOAA afin de pouvoir procéder à des analyses et déterminer les critères qui peuvent expliquer le réchauffement climatique.
 
-This is a docker container for Apache Hive 2.3.2. It is based on https://github.com/big-data-europe/docker-hadoop so check there for Hadoop configurations.
-This deploys Hive and starts a hiveserver2 on port 10000.
-Metastore is running with a connection to postgresql database.
-The hive configuration is performed with HIVE_SITE_CONF_ variables (see hadoop-hive.env for an example).
+### Répertoire Map Reduce
 
-To run Hive with postgresql metastore:
-```
-    docker-compose up -d
-```
+Ici se trouve toutes les opérations d'agrégation sur les données de la NOAA
 
-To deploy in Docker Swarm:
-```
-    docker stack deploy -c docker-compose.yml hive
-```
+Le mapper étant générique, il peut interpréter n'importe quelle colonne des données CSV.
+Il faut renseigner dans l'ordre donné, les colonnes souhaitées.
 
-To run a PrestoDB 0.181 with Hive connector:
+Rappel commande : `cat <fichier> | ./mapper.py <colonnes séparées avec espace> | ./<reducer> <critère>`
 
-```
-  docker-compose up -d presto-coordinator
-```
+Rappel des colonnes :
 
-This deploys a Presto server listens on port `8080`
+- STATION
+- DATE
+- SOURCE
+- LATITUDE
+- LONGITUDE
+- ELEVATION
+- NAME
+- REPORT_TYPE
+- CALL_SIGN
+- QUALITY_CONTROL
+- WND
+- CIG
+- VIS
+- TMP
+- DEW
+- SLP
+- KA1
+- KA2
+- MA1
+- MD1
+- OC1
+- OD1
+- OD2
+- REM
+- EQD
 
-## Testing
-Load data into Hive:
-```
-  $ docker-compose exec hive-server bash
-  # /opt/hive/bin/beeline -u jdbc:hive2://localhost:10000
-  > CREATE TABLE pokes (foo INT, bar STRING);
-  > LOAD DATA LOCAL INPATH '/opt/hive/examples/files/kv1.txt' OVERWRITE INTO TABLE pokes;
-```
+### Opérations
 
-Then query it from PrestoDB. You can get [presto.jar](https://prestosql.io/docs/current/installation/cli.html) from PrestoDB website:
-```
-  $ wget https://repo1.maven.org/maven2/io/prestosql/presto-cli/308/presto-cli-308-executable.jar
-  $ mv presto-cli-308-executable.jar presto.jar
-  $ chmod +x presto.jar
-  $ ./presto.jar --server localhost:8080 --catalog hive --schema default
-  presto> select * from pokes;
-```
+- Calcul de température par jour :
+  - Reducer : ` temp_jour.py` 
+  - Colonnes : DATE, TMP
+  - Critères :
 
-## Contributors
-* Ivan Ermilov [@earthquakesan](https://github.com/earthquakesan) (maintainer)
-* Yiannis Mouchakis [@gmouchakis](https://github.com/gmouchakis)
-* Ke Zhu [@shawnzhu](https://github.com/shawnzhu)
+| Critère | Description | 
+| ------- | :----------:|
+|  `max`  |  Température maximale | 
+|  `min`  |  Température minimale |
+|  `moy`  |  Température moyenne  |  
+|  `range`|  Écart de température (max - min) |
 
 
-## les colonnes du csv (37 colonnes)
-"STATION","DATE","SOURCE","LATITUDE","LONGITUDE","ELEVATION","NAME","REPORT_TYPE","CALL_SIGN","QUALITY_CONTROL","WND","CIG","VIS","TMP","DEW","SLP","AA1","AA2","AJ1","AY1","AY2","GA1","GA2","GA3","GE1","GF1","IA1","KA1","KA2","MA1","MD1","MW1","OC1","OD1","UA1","REM","EQD"
 
+- Calcul de température **par longitude/latitude** : 
+  - Reducer : ` temp_lat.py` 
+  - Colonnes : LATITUDE, LONGITUDE, TMP
+  - Critères possibles : idem qu'au dessus
+
+- Calcul de la moyenne des températures **par station météorologique** 
+  - Reducer : `temp_avg.py` 
+  - Colonnes : STATION, TMP
+
+### Commandes
+
+Les jobs MapReduce sont à lancer dans des nodes du cluster Hadoop :
+
+1. Il faut accéder à un des services docker (`namenode`, ` datanode`, `resourcemanager`) : `docker-compose exec <service> bash`
+
+2. Commande pour exécuter un job sur Hadoop :
+`
