@@ -71,4 +71,6 @@ Les jobs MapReduce sont à lancer dans des nodes du cluster Hadoop :
 1. Il faut accéder à un des services docker (`namenode`, ` datanode`, `resourcemanager`) : `docker-compose exec <service> bash`
 
 2. Commande pour exécuter un job sur Hadoop :
-`
+`yarn jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.4.jar -files /map_reduce/mapper.py,/map_reduce/temp_jour.py -mapper "./mapper.py <colonnes>" -reducer "./<reducer>" -input /user/hadoop/data/*.csv -output <destination>`
+
+D'autres exemples de commandes pour manipuler le HDFS se trouvent dans le fichier `commands.txt`
