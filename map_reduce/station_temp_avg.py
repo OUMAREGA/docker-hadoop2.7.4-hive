@@ -5,6 +5,7 @@
 # Avoir la moyenne des températures par station
 
 import sys
+import re
 sum = 0
 counter = 0
 oldKey = None
@@ -33,7 +34,8 @@ for line in sys.stdin:
 
     oldKey = station
     counter+=1
-    temp = float(temp.replace(',','.'))
+    # remove all non numeric characters (except +, - and comma)
+    temp = re.sub("[^0-9\-+\,]","",temp).replace(',','.')
 
     sum += temp
     

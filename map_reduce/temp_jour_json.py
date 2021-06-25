@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import builtins # fonctions natives de python : min, max
-
+import json
 # DATE TMP
 
 # Déterminer la température minimale, maximale, moyenne ou l'écart par jour
@@ -27,6 +27,7 @@ for line in sys.stdin:
 
 op = sys.argv[0]
 
+result = []
 
 for day in dico.keys():
     
@@ -40,7 +41,10 @@ for day in dico.keys():
         function_result = max(dico[day]) - min(dico[day])
     if op == "min" or op == "max":  
         function_result = getattr(builtins,op)(dico[day])
+    
+    #result[day] = function_result;
 
-    print("{}\t{}".format(day,function_result))
+    #print("{}\t{}".format(day,function_result))
+    result.append({day: function_result})
 
-
+print(json.dumps(result))

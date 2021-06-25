@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import builtins # fonctions natives de python : min, max
-
+import re
 # LATITUDE LONGITUDE TMP
 
 # Déterminer la température minimale, maximale, moyenne en fonction de la latitude - longitude
@@ -17,7 +17,8 @@ dico = {}
 for line in sys.stdin:
     lat,lon,temp = line.split('\t')
     lat_lon = lat + "-" + lon
-    temp=float(temp.replace(',','.'))
+    # remove all non numeric characters (except +, - and comma)
+    temp = re.sub("[^0-9\-+\,]","",temp).replace(',','.')
     if lat_lon not in dico:
         dico[lat_lon] = []
     dico[lat_lon].append(temp);
