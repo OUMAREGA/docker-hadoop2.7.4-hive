@@ -18,7 +18,9 @@ services:
       - ./snapshots:/snapshots
 
   datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+    build: 
+      context: ./dockerfiles
+      dockerfile: datanode.Dockerfile 
     env_file:
       - ./hadoop-hive.env
     environment:
@@ -100,9 +102,14 @@ services:
     volumes:
       - ./conf/hue.ini:/usr/share/hue/desktop/conf/hue.ini
   
+  mongodb:
+    image: mongo
+    volumes:
+      - mongodata:/data/db
 
 volumes:
   historyserver:
+  mongodata:
 
 networks: 
   default:
